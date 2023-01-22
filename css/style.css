@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  width: 100%;
+  background-color: brown;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+h1{
+  color: white;
+  font-size: 50px;
+}
+
+.patternDiv {
+  background-color: bisque;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.pattern {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin: 3px;
+}
+
