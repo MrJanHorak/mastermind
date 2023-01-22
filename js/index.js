@@ -73,14 +73,14 @@ pattern.forEach((ele, index) => {
 for (let i = 0; i < maxGuesses; i++) {
   const guessInput = document.createElement('div')
   guessInput.className = 'patternGuessDiv'
-  
+
   const hintsDiv = document.createElement('div')
   hintsDiv.className = 'hintDiv'
   hintsDiv.id = `hintsRow${i}`
 
   for (let h = 0; h < pattern.length; h++) {
     const hintPeg = document.createElement('div')
-    hintPeg.className = "hint"
+    hintPeg.className = 'hint'
     hintPeg.id = `hr${i}hi${h}`
     hintsDiv.appendChild(hintPeg)
   }
@@ -97,3 +97,20 @@ for (let i = 0; i < maxGuesses; i++) {
   guessDiv.className = 'guessDiv'
 }
 gameContainerDiv.appendChild(guessDiv)
+
+const giveHint = () => {
+  shuffle(hints)
+  let currentRow = maxGuesses - 1 - guesses
+  console.log('currentRow', currentRow)
+  for (let h = 0; h < pattern.length; h++) {
+    let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
+    if (hints[h] !== '') {
+      currentHintPeg.style.backgroundColor = hints[h]
+    } else {
+      console.log('hello', currentHintPeg)
+    }
+  }
+  guessInput.appendChild(hintsDiv)
+}
+
+giveHint()
