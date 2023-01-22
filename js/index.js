@@ -1,25 +1,25 @@
 let colors = ['red', 'green', 'purple', 'white', 'black', 'orange', 'blue']
 let pattern = ['', '', '', ''] // let computer generate random pattern
 let guess = ['red', 'green', 'green', 'blue']
-
 let hints = ['', '', '', ''] // randomize the hints
-
 let score = 0
 let guesses = 0
 let maxGuesses = 10
 
-// create game field on DOM
+// create game field divs for DOM
 const main = document.querySelector('body')
 const gameContainerDiv = document.createElement('div')
 const gameHeader = document.createElement('h1')
 const patternDiv = document.createElement('div')
 const gameBoardDiv = document.createElement('div')
-
 const guessDiv = document.createElement('div')
 const scoreDiv = document.createElement('div')
+const gamePieceDiv = document.createElement('div')
+gamePieceDiv.className = 'gamePieceDiv'
 
 // set up game
 
+// simple function to shuffle the arrays
 const shuffle = (arr) => {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -27,12 +27,14 @@ const shuffle = (arr) => {
   }
 }
 
+// function to have computer pic a random pattern
 const patternPicker = (arr) => {
   for (let i = 0; i < arr.length; i++) {
     arr[i] = colors[Math.floor(Math.random() * colors.length)]
   }
 }
 
+// function to compare guess with chosen pattern
 const compGuessPat = (guess) => {
   guess.forEach((ele, index) => {
     if (guess[index] === pattern[index]) {
@@ -45,6 +47,8 @@ const compGuessPat = (guess) => {
     }
   })
 }
+
+// game play
 
 shuffle(colors)
 patternPicker(pattern)
@@ -78,6 +82,7 @@ for (let i = 0; i < maxGuesses; i++) {
   hintsDiv.className = 'hintDiv'
   hintsDiv.id = `hintsRow${i}`
 
+  // create empty hints holes
   for (let h = 0; h < pattern.length; h++) {
     const hintPeg = document.createElement('div')
     hintPeg.className = 'hint'
@@ -86,6 +91,7 @@ for (let i = 0; i < maxGuesses; i++) {
   }
   guessInput.appendChild(hintsDiv)
 
+  // create empty guess holes
   for (let j = 0; j < pattern.length; j++) {
     const guessPeg = document.createElement('div')
     guessPeg.className = 'pattern'
@@ -98,6 +104,7 @@ for (let i = 0; i < maxGuesses; i++) {
 }
 gameContainerDiv.appendChild(guessDiv)
 
+// function to give hints based upon current guess
 const giveHint = () => {
   shuffle(hints)
   let currentRow = maxGuesses - 1 - guesses
@@ -112,5 +119,14 @@ const giveHint = () => {
   }
   guessInput.appendChild(hintsDiv)
 }
+
+// create div to hold available game colors
+colors.forEach((ele, index) => {
+  let colorPeg = document.createElement('div')
+  colorPeg.className = 'pattern'
+  colorPeg.style.backgroundColor = ele
+  gamePieceDiv.appendChild(colorPeg)
+  gameContainerDiv.appendChild(gamePieceDiv)
+})
 
 giveHint()

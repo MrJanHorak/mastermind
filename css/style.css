@@ -62,3 +62,20 @@ h1{
   border-radius: 50%;
   background-color: black;
 }
+
+.gamePieceDiv {
+  background-color: bisque;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin-top: 10px;
+}
+
+.gamePieceDiv .pattern{
+ width: 25px;
+ height: 25px;
+}
