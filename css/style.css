@@ -8,7 +8,7 @@ body {
   align-items: center;
 }
 
-h1{
+h1 {
   color: white;
   font-size: 50px;
 }
@@ -42,6 +42,7 @@ h1{
   border-radius: 50%;
   margin-left: 2px;
   margin-right: 2px;
+  background-color: aqua;
 }
 
 .guessDiv {
@@ -50,7 +51,7 @@ h1{
   background-color: antiquewhite;
 }
 
-.hintDiv{
+.hintDiv {
   display: flex;
   width: 50px;
   flex-wrap: wrap;
@@ -75,7 +76,24 @@ h1{
   margin-top: 10px;
 }
 
-.gamePieceDiv .pattern{
- width: 25px;
- height: 25px;
+.gamePieceDiv .pattern {
+  width: 25px;
+  height: 25px;
+}
+
+.gamePeg {
+  cursor: pointer;
+}
+
+.dragging {
+  border: solid black 2px;
+}
+
+.hover {
+  background-color: darkgray;
+  border-style: dashed;
+}
+
+.invisible {
+  background-color: bisque;
 }

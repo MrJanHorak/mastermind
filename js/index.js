@@ -77,6 +77,7 @@ pattern.forEach((ele, index) => {
 for (let i = 0; i < maxGuesses; i++) {
   const guessInput = document.createElement('div')
   guessInput.className = 'patternGuessDiv'
+  guessInput.id = i
 
   const hintsDiv = document.createElement('div')
   hintsDiv.className = 'hintDiv'
@@ -120,11 +121,46 @@ const giveHint = () => {
   guessInput.appendChild(hintsDiv)
 }
 
+// set up drag event functions
+const dragStart = (e) => {
+  e.target.className += ' dragging'
+  // setTimeout(() => (e.target.className = 'invisible'), 0)
+  console.log('start : ', e.target.id)
+}
+
+const dragEnd = (e) => {
+  e.target.className = 'pattern gamePeg'
+  console.log('end : ', e.target.id)
+}
+
+const dragOver = (e) => {
+  e.target.className += ' hover'
+  console.log('end : ', e.target.id)
+}
+const dragEnter = (e) => {
+  e.target.className = 'pattern gamePeg'
+  console.log('end : ', e.target.id)
+}
+
+const dragLeave = (e) => {
+  e.target.className = 'pattern gamePeg'
+  console.log('end : ', e.target.id)
+}
+
+const dragDrop = (e) => {
+  e.target.className = 'pattern gamePeg'
+  console.log('end : ', e.target.id)
+}
+
 // create div to hold available game colors
 colors.forEach((ele, index) => {
   let colorPeg = document.createElement('div')
-  colorPeg.className = 'pattern'
+  colorPeg.className = 'pattern gamePeg'
   colorPeg.style.backgroundColor = ele
+  colorPeg.id = index
+  colorPeg.draggable = true
+  colorPeg.addEventListener('dragstart', dragStart)
+  colorPeg.addEventListener('dragend', dragEnd)
   gamePieceDiv.appendChild(colorPeg)
   gameContainerDiv.appendChild(gamePieceDiv)
 })
