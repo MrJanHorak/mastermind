@@ -91,6 +91,7 @@ h1 {
 
 .hover {
   background-color: darkgray;
+  border-color: brown;
   border-style: dashed;
 }
 
