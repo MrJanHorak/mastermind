@@ -1,11 +1,14 @@
 let colors = ['red', 'green', 'purple', 'white', 'black', 'orange', 'blue']
 let pattern = ['', '', '', ''] // let computer generate random pattern
-let guess = ['red', 'green', 'green', 'blue']
+let guess = ['', '', '', '']
 let hints = ['', '', '', ''] // randomize the hints
 let score = 0
 let guesses = 0
 let maxGuesses = 10
 let currentRow
+let finished = false
+let dragged
+
 // create game field divs for DOM
 const main = document.querySelector('body')
 const gameContainerDiv = document.createElement('div')
@@ -35,6 +38,46 @@ const patternPicker = (arr) => {
   }
 }
 
+const createDropZone = () => {
+  console.log('ADDING LISTENERS')
+  console.log('Guesses: ', guesses)
+  currentRow = maxGuesses - 1 - guesses
+  const currentDropZone = document.querySelectorAll(`.gr${currentRow}`)
+  currentDropZone.forEach((zone) => {
+    zone.addEventListener('dragenter', dragEnter)
+    zone.addEventListener('dragover', dragOver)
+    zone.addEventListener('dragleave', dragLeave)
+    zone.addEventListener('drop', dragDrop)
+  })
+}
+
+const removeDropZone = () => {
+  console.log('REMOVING LISTENERS')
+  console.log('Guesses: ', guesses)
+  // currentRow = maxGuesses - 1 - guesses
+  const currentDropZone = document.querySelectorAll(`.gr${currentRow}`)
+  currentDropZone.forEach((zone) => {
+    zone.removeEventListener('dragenter', dragEnter)
+    zone.removeEventListener('dragover', dragOver)
+    zone.removeEventListener('dragleave', dragLeave)
+    zone.removeEventListener('drop', dragDrop)
+  })
+}
+
+// function to give hints based upon current guess
+const giveHint = () => {
+  shuffle(hints)
+  currentRow = maxGuesses - 1 - guesses
+  console.log('Current Row in giving hints: ', currentRow)
+  for (let h = 0; h < pattern.length; h++) {
+    let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
+    if (hints[h] !== '') {
+      currentHintPeg.style.backgroundColor = hints[h]
+    }
+  }
+  guessInput.appendChild(hintsDiv)
+}
+
 // function to compare guess with chosen pattern
 const compGuessPat = (guess) => {
   guess.forEach((ele, index) => {
@@ -47,69 +90,47 @@ const compGuessPat = (guess) => {
       }
     }
   })
-}
-
-// function to give hints based upon current guess
-const giveHint = () => {
-  shuffle(hints)
-  let currentRow = maxGuesses - 1 - guesses
-  console.log('currentRow', currentRow)
-  for (let h = 0; h < pattern.length; h++) {
-    let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
-    if (hints[h] !== '') {
-      currentHintPeg.style.backgroundColor = hints[h]
-    }
-  }
-  guessInput.appendChild(hintsDiv)
+  guess = ['', '', '', '']
+  giveHint()
 }
 
 // set up drag event functions
 const dragStart = (e) => {
-  e.target.className += ' dragging'
-  // setTimeout(() => (e.target.className = 'invisible'), 0)
-  console.log('start : ', e.target.id)
+  e.target.class += ' dragging'
+  dragged = e.target.getAttribute('data-color')
 }
 
 const dragEnd = (e) => {
-  e.target.className = 'pattern gamePeg'
-  console.log('end : ', e.target.id)
+  e.target.classList.remove = 'dragging'
 }
 
-// const dragOver = (e) => {
-//   // e.prevent.default
-//   console.log('Over : ', e.target.id)
-// }
+const dragOver = (e) => {
+  e.stopPropagation()
+  e.preventDefault()
+  e.dataTransfer.dropEffect = 'move'
+  e.target.classList.add = 'hover'
+}
+
 const dragEnter = (e) => {
-  // e.prevent.default
-  // e.target.className.toggle('hover')
-  // e.target.className = 'pattern gamePeg'
-  console.log('Enter : ', e.target.id)
+  e.stopPropagation()
+  e.preventDefault()
 }
 
 const dragLeave = (e) => {
-  // e.prevent.default
-  // e.target.className.toggle('hover')
-  // e.target.className = 'pattern gamePeg'
-  console.log('Leave : ', e.target.id)
+  e.stopPropagation()
+  e.prevent.default()
+  e.target.classList.remove = 'hover'
 }
 
 const dragDrop = (e) => {
-  // e.target.className = 'pattern gamePeg'
-  console.log('Drop : ', e.target.id)
-  e.target.append(colorPeg)
-}
-
-const createDropZone = () => {
-  console.log('Still current row: ', currentRow)
-  const currentDropZone = document.querySelectorAll(`.gr${currentRow}`)
-  console.log(currentDropZone)
-  currentDropZone.forEach((zone) => {
-    console.log('zone: ', zone)
-    // zone.addEventListener('dragover', dragOver)
-    zone.addEventListener('dragenter', dragEnter)
-    zone.addEventListener('dragLeave', dragLeave)
-    zone.addEventListener('drop', dragDrop)
-  })
+  e.target.classList.remove = 'hover'
+  const data = e.dataTransfer.getData('text')
+  let dropIndex = e.target.id.split('')[2]
+  e.target.style.backgroundColor = dragged
+  guess[dropIndex] = dragged
+  if (!guess.includes('')) {
+    compGuessPat(guess)
+  }
 }
 
 // fill the DOM
@@ -146,7 +167,7 @@ const render = () => {
     // create empty hints holes
     for (let h = 0; h < pattern.length; h++) {
       const hintPeg = document.createElement('div')
-      hintPeg.className = 'hint'
+      hintPeg.className = `hint`
       hintPeg.id = `hr${i}hi${h}`
       hintsDiv.appendChild(hintPeg)
     }
@@ -169,6 +190,7 @@ const render = () => {
   colors.forEach((ele, index) => {
     colorPeg = document.createElement('div')
     colorPeg.className = 'pattern gamePeg'
+    colorPeg.setAttribute('data-color', ele)
     colorPeg.style.backgroundColor = ele
     colorPeg.id = index
     colorPeg.draggable = true
@@ -177,17 +199,16 @@ const render = () => {
     gamePieceDiv.appendChild(colorPeg)
     gameContainerDiv.appendChild(gamePieceDiv)
   })
+  createDropZone()
 }
 
 // game play
-render()
 
+render()
 shuffle(colors)
 
 console.log(colors)
 console.log('Pattern: ', pattern)
 console.log('Guess: ', guess)
-compGuessPat(guess)
 console.log('Hints: ', hints)
-createDropZone()
-giveHint()
+// removeDropZone()
