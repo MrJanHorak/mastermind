@@ -8,6 +8,7 @@ let maxGuesses = 10
 let currentRow
 let finished = false
 let dragged
+let colorPeg
 
 // create game field divs for DOM
 const main = document.querySelector('body')
@@ -19,7 +20,6 @@ const guessDiv = document.createElement('div')
 const scoreDiv = document.createElement('div')
 const gamePieceDiv = document.createElement('div')
 gamePieceDiv.className = 'gamePieceDiv'
-let colorPeg
 
 // game functions
 
@@ -39,8 +39,6 @@ const patternPicker = (arr) => {
 }
 
 const createDropZone = () => {
-  console.log('ADDING LISTENERS')
-  console.log('Guesses: ', guesses)
   currentRow = maxGuesses - 1 - guesses
   const currentDropZone = document.querySelectorAll(`.gr${currentRow}`)
   currentDropZone.forEach((zone) => {
@@ -52,8 +50,6 @@ const createDropZone = () => {
 }
 
 const removeDropZone = () => {
-  console.log('REMOVING LISTENERS')
-  console.log('Guesses: ', guesses)
   // currentRow = maxGuesses - 1 - guesses
   const currentDropZone = document.querySelectorAll(`.gr${currentRow}`)
   currentDropZone.forEach((zone) => {
@@ -62,19 +58,24 @@ const removeDropZone = () => {
     zone.removeEventListener('dragleave', dragLeave)
     zone.removeEventListener('drop', dragDrop)
   })
+  hints = ['', '', '', '']
+  guess = ['', '', '', '']
+  guesses++
+  currentRow = maxGuesses - 1 - guesses
+  createDropZone()
 }
 
 // function to give hints based upon current guess
 const giveHint = () => {
   shuffle(hints)
   currentRow = maxGuesses - 1 - guesses
-  console.log('Current Row in giving hints: ', currentRow)
   for (let h = 0; h < pattern.length; h++) {
     let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
     if (hints[h] !== '') {
       currentHintPeg.style.backgroundColor = hints[h]
     }
   }
+  removeDropZone()
   guessInput.appendChild(hintsDiv)
 }
 
@@ -90,7 +91,6 @@ const compGuessPat = (guess) => {
       }
     }
   })
-  guess = ['', '', '', '']
   giveHint()
 }
 
