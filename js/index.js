@@ -20,7 +20,9 @@ const gameBoardDiv = document.createElement('div')
 const guessDiv = document.createElement('div')
 const scoreDiv = document.createElement('div')
 const gamePieceDiv = document.createElement('div')
+const gamePieceCon = document.createElement('div')
 gamePieceDiv.className = 'gamePieceDiv'
+gamePieceCon.className = 'gamePieceCon'
 
 // game functions
 
@@ -63,9 +65,16 @@ const removeDropZone = () => {
   guess = ['', '', '', '']
   guesses++
   currentRow = maxGuesses - 1 - guesses
-  if(!win){
+  if (!win) {
     createDropZone()
   }
+}
+
+const revealPattern = () => {
+  const toReveal = document.querySelectorAll('.toGuess')
+  toReveal.forEach((ele, index) => {
+    ele.style.backgroundColor = pattern[index]
+  })
 }
 
 // function to give hints based upon current guess
@@ -78,8 +87,9 @@ const giveHint = () => {
       currentHintPeg.style.backgroundColor = hints[h]
     }
   }
-  if(hints.filter(ele => ele === 'red').length === 4){
-    console.log("WINNER cause win condition achieved!")
+  if (hints.filter((ele) => ele === 'red').length === 4) {
+    console.log('win condition')
+    revealPattern()
     win = true
   }
   removeDropZone()
@@ -104,34 +114,34 @@ const compGuessPat = (guess) => {
 
 // set up drag event functions
 const dragStart = (e) => {
-  e.target.class += ' dragging'
+  e.target.classList.add('dragging')
   dragged = e.target.getAttribute('data-color')
 }
 
 const dragEnd = (e) => {
-  e.target.classList.remove = 'dragging'
+  e.target.classList.remove('dragging')
 }
 
 const dragOver = (e) => {
   e.stopPropagation()
   e.preventDefault()
   e.dataTransfer.dropEffect = 'move'
-  e.target.classList.add = 'hover'
 }
 
 const dragEnter = (e) => {
   e.stopPropagation()
   e.preventDefault()
+  e.target.classList.add('hover')
 }
 
 const dragLeave = (e) => {
   e.stopPropagation()
-  e.prevent.default()
-  e.target.classList.remove = 'hover'
+  // e.prevent.default()
+  e.target.classList.remove('hover')
 }
 
 const dragDrop = (e) => {
-  e.target.classList.remove = 'hover'
+  e.target.classList.remove('hover')
   const data = e.dataTransfer.getData('text')
   let dropIndex = e.target.id.split('')[2]
   e.target.style.backgroundColor = dragged
@@ -156,8 +166,8 @@ const render = () => {
   // create div to hold pattern to guess
   pattern.forEach((ele, index) => {
     colorPeg = document.createElement('div')
-    colorPeg.className = 'pattern'
-    colorPeg.style.backgroundColor = ele
+    colorPeg.className = 'pattern toGuess'
+    colorPeg.style.backgroundColor = 'gray'
     patternDiv.appendChild(colorPeg)
     gameContainerDiv.appendChild(patternDiv)
   })
@@ -186,7 +196,7 @@ const render = () => {
       const guessPeg = document.createElement('div')
       guessPeg.className = `pattern gr${i}`
       guessPeg.id = `gc${j}`
-      guessPeg.style.backgroundColor = 'black'
+      guessPeg.style.backgroundColor = 'gray'
       guessInput.appendChild(guessPeg)
     }
     guessDiv.appendChild(guessInput)
@@ -205,7 +215,8 @@ const render = () => {
     colorPeg.addEventListener('dragstart', dragStart)
     colorPeg.addEventListener('dragend', dragEnd)
     gamePieceDiv.appendChild(colorPeg)
-    gameContainerDiv.appendChild(gamePieceDiv)
+    gamePieceCon.appendChild(gamePieceDiv)
+    gameContainerDiv.appendChild(gamePieceCon)
   })
   createDropZone()
 }
