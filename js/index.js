@@ -9,6 +9,7 @@ let currentRow
 let finished = false
 let dragged
 let colorPeg
+let win = false
 
 // create game field divs for DOM
 const main = document.querySelector('body')
@@ -62,7 +63,9 @@ const removeDropZone = () => {
   guess = ['', '', '', '']
   guesses++
   currentRow = maxGuesses - 1 - guesses
-  createDropZone()
+  if(!win){
+    createDropZone()
+  }
 }
 
 // function to give hints based upon current guess
@@ -75,6 +78,10 @@ const giveHint = () => {
       currentHintPeg.style.backgroundColor = hints[h]
     }
   }
+  if(hints.filter(ele => ele === 'red').length === 4){
+    console.log("WINNER cause win condition achieved!")
+    win = true
+  }
   removeDropZone()
   guessInput.appendChild(hintsDiv)
 }
@@ -85,6 +92,7 @@ const compGuessPat = (guess) => {
     if (guess[index] === pattern[index]) {
       hints[index] = 'red'
     }
+
     if (pattern.includes(guess[index])) {
       if (guess[index] !== pattern[index]) {
         hints[index] = 'white'
