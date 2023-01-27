@@ -4,7 +4,9 @@ let guess = ['', '', '', '']
 let hints = ['', '', '', '']
 let guesses = 0
 let maxGuesses = 10
+let totalGuesses = 0
 let currentRow
+let score = 0
 let finished = false
 let dragged
 let colorPeg
@@ -137,6 +139,11 @@ const giveHint = () => {
   }
   if (hints.filter((ele) => ele === 'red').length === 4) {
     console.log('win condition')
+    score += 100
+    totalGuesses += guesses
+    console.log("SCORE: ",score)
+    console.log("total guesses all together: ",totalGuesses)
+    console.log('Guesses this round: ', guesses)
     revealPattern()
     win = true
   }
