@@ -23,6 +23,7 @@ let patternTracker = {
 // create game field divs for DOM
 const main = document.querySelector('body')
 const gameContainerDiv = document.createElement('div')
+gameContainerDiv.className = 'mainContainer'
 const gameHeader = document.createElement('h1')
 const patternDiv = document.createElement('div')
 const gameBoardDiv = document.createElement('div')
