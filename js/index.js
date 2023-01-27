@@ -1,8 +1,7 @@
 let colors = ['red', 'green', 'purple', 'white', 'black', 'orange', 'blue']
-let pattern = ['', '', '', ''] // let computer generate random pattern
+let pattern = ['', '', '', '']
 let guess = ['', '', '', '']
-let hints = ['', '', '', ''] // randomize the hints
-let score = 0
+let hints = ['', '', '', '']
 let guesses = 0
 let maxGuesses = 10
 let currentRow
@@ -10,6 +9,16 @@ let finished = false
 let dragged
 let colorPeg
 let win = false
+let colorTracker = {}
+let patternTracker = {
+  red: 0,
+  green: 0,
+  purple: 0,
+  white: 0,
+  black: 0,
+  orange: 0,
+  blue: 0
+}
 
 // create game field divs for DOM
 const main = document.querySelector('body')
@@ -20,9 +29,47 @@ const gameBoardDiv = document.createElement('div')
 const guessDiv = document.createElement('div')
 const scoreDiv = document.createElement('div')
 const gamePieceDiv = document.createElement('div')
-const gamePieceCon = document.createElement('div')
 gamePieceDiv.className = 'gamePieceDiv'
+const gamePieceCon = document.createElement('div')
 gamePieceCon.className = 'gamePieceCon'
+const replayButton = document.createElement('button')
+replayButton.className = 'replay'
+
+const init = () => {
+  pattern = ['', '', '', '']
+  guess = ['', '', '', '']
+  hints = ['', '', '', '']
+  guesses = 0
+  currentRow = maxGuesses - guesses - 1
+  finished = false
+  win = false
+  colorTracker = {}
+  patternTracker = {
+    red: 0,
+    green: 0,
+    purple: 0,
+    white: 0,
+    black: 0,
+    orange: 0,
+    blue: 0
+  }
+  for (let r = 0; r < maxGuesses; r++) {
+    for (let h = 0; h < pattern.length; h++) {
+      let currentHintPeg = document.querySelector(`#hr${r}hi${h}`)
+      currentHintPeg.style.backgroundColor = 'black'
+    }
+  }
+  for (let r = 0; r < maxGuesses; r++) {
+    for (let j = 0; j < pattern.length; j++) {
+      const guessPeg = document.getElementById(`gr${r}gc${j}`)
+      guessPeg.style.backgroundColor = 'gray'
+    }
+  }
+  shuffle(colors)
+  patternPicker(pattern)
+  console.log(pattern)
+  createDropZone()
+}
 
 // game functions
 
@@ -93,19 +140,33 @@ const giveHint = () => {
     win = true
   }
   removeDropZone()
-  guessInput.appendChild(hintsDiv)
+  // guessInput.appendChild(hintsDiv)
 }
 
 // function to compare guess with chosen pattern
 const compGuessPat = (guess) => {
+  guess.forEach((ele) => {
+    ele in colorTracker ? (colorTracker[ele] += 1) : (colorTracker[ele] = 1)
+  })
+
+  pattern.forEach((ele) => {
+    ele in patternTracker
+      ? (patternTracker[ele] += 1)
+      : (patternTracker[ele] = 1)
+  })
+
   guess.forEach((ele, index) => {
     if (guess[index] === pattern[index]) {
       hints[index] = 'red'
+      colorTracker[guess[index]] -= 1
+      patternTracker[guess[index]] -= 1
     }
 
     if (pattern.includes(guess[index])) {
-      if (guess[index] !== pattern[index]) {
+      if (guess[index] !== pattern[index] && patternTracker[guess[index]] > 0) {
         hints[index] = 'white'
+        colorTracker[guess[index]] -= 1
+        patternTracker[guess[index]] -= 1
       }
     }
   })
@@ -143,7 +204,7 @@ const dragLeave = (e) => {
 const dragDrop = (e) => {
   e.target.classList.remove('hover')
   const data = e.dataTransfer.getData('text')
-  let dropIndex = e.target.id.split('')[2]
+  let dropIndex = e.target.id.split('')[5]
   e.target.style.backgroundColor = dragged
   guess[dropIndex] = dragged
   if (!guess.includes('')) {
@@ -195,7 +256,7 @@ const render = () => {
     for (let j = 0; j < pattern.length; j++) {
       const guessPeg = document.createElement('div')
       guessPeg.className = `pattern gr${i}`
-      guessPeg.id = `gc${j}`
+      guessPeg.id = `gr${i}gc${j}`
       guessPeg.style.backgroundColor = 'gray'
       guessInput.appendChild(guessPeg)
     }
@@ -218,7 +279,12 @@ const render = () => {
     gamePieceCon.appendChild(gamePieceDiv)
     gameContainerDiv.appendChild(gamePieceCon)
   })
+
   createDropZone()
+
+  replayButton.innerText = 'replay'
+  replayButton.addEventListener('click', init)
+  gameContainerDiv.appendChild(replayButton)
 }
 
 // game play
@@ -226,8 +292,4 @@ const render = () => {
 render()
 shuffle(colors)
 
-console.log(colors)
 console.log('Pattern: ', pattern)
-console.log('Guess: ', guess)
-console.log('Hints: ', hints)
-// removeDropZone()
