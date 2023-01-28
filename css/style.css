@@ -6,6 +6,7 @@ body {
   justify-content: center;
   align-content: center;
   align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -13,11 +14,31 @@ h1 {
   font-size: 50px;
 }
 
-.mainContainer{
+.mainContainer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  align-content: center;
+  text-align: center;
+}
+
+.instructions {
+  display: flex;
+  flex-direction: column;
+  margin: 10%;
+  font-size: small;
+  justify-content: center;
+  align-items: center;
+}
+
+.rules {
+  padding: 30px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.header{
+  width: 100%;
+  text-align: center;
 }
 
 .patternDiv {
@@ -95,7 +116,7 @@ h1 {
 }
 
 .dragging {
-  border: solid  rgb(191, 194, 30) 2px;
+  border: solid rgb(191, 194, 30) 4px;
 }
 
 .hover {
@@ -105,16 +126,15 @@ h1 {
 }
 
 .replay {
-  margin-left: 37%;
-  margin-top: 12px;
+  margin: 12px;
   height: 35px;
   width: 75px;
   border-radius: 8px;
 }
 
-.replay:hover{
+.replay:hover {
   background-color: rgb(45, 45, 44);
 }
-.replay:active{
+.replay:active {
   background-color: white;
 }
