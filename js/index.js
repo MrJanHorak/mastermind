@@ -129,18 +129,29 @@ const removeDropZone = () => {
   }
 }
 
+const anitmateWinningGuess = () => {
+  currentRow = maxGuesses - guesses
+  const winningGuess = document.querySelectorAll(`.gr${currentRow}`)
+  winningGuess.forEach((peg) => {
+    peg.classList.add('animate__heartBeat')
+    peg.style.setProperty('--animate-duration', '2s')
+  })
+}
 
 const revealPattern = () => {
   const toReveal = document.querySelectorAll('.toGuess')
   toReveal.forEach((ele, index) => {
     ele.style.backgroundColor = pattern[index]
+    ele.style.setProperty('--animate-duration', '2s')
+    ele.classList.add('animate__heartBeat')
   })
 }
 
 const hidePattern = () => {
-  const toReveal = document.querySelectorAll('.toGuess')
-  toReveal.forEach((ele, index) => {
-    ele.style.backgroundColor = "grey"
+  const toHide = document.querySelectorAll('.toGuess')
+  toHide.forEach((ele, index) => {
+    ele.style.backgroundColor = 'grey'
+    ele.classList.remove('animate__heartBeat')
   })
 }
 // function to give hints based upon current guess
@@ -151,17 +162,19 @@ const giveHint = () => {
     let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
     if (hints[h] !== '') {
       currentHintPeg.style.backgroundColor = hints[h]
+      currentHintPeg.style.setProperty('--animate-duration', '2s')
+      currentHintPeg.classList.add('animate__zoomIn')
     }
   }
   if (hints.filter((ele) => ele === 'red').length === 4) {
     console.log('win condition')
     score += 100
     totalGuesses += guesses
+    anitmateWinningGuess()
     revealPattern()
     win = true
   }
   removeDropZone()
-  // guessInput.appendChild(hintsDiv)
 }
 
 // function to compare guess with chosen pattern
@@ -322,7 +335,10 @@ const render = () => {
   replayButton.innerHTML = '<b>replay</b>'
   replayButton.addEventListener('click', init)
   rulesButton.innerHTML = '<b>rules</b>'
-  rulesButton.addEventListener('click', () => window.location ="./rules.html")
+  rulesButton.addEventListener(
+    'click',
+    () => (window.location = './rules.html')
+  )
   buttonContainer.appendChild(replayButton)
   buttonContainer.appendChild(rulesButton)
   gameContainerDiv.appendChild(buttonContainer)
