@@ -196,13 +196,19 @@ const compGuessPat = (guess) => {
       hints[index] = 'red'
       colorTracker[guess[index]] -= 1
       patternTracker[guess[index]] -= 1
-    }
-
-    if (pattern.includes(guess[index])) {
-      if (guess[index] !== pattern[index] && patternTracker[guess[index]] > 0) {
-        hints[index] = 'white'
+      if (patternTracker[guess[index]] < colorTracker[guess[index]]) {
         colorTracker[guess[index]] -= 1
-        patternTracker[guess[index]] -= 1
+      }
+
+      if (pattern.includes(guess[index])) {
+        if (
+          guess[index] !== pattern[index] &&
+          patternTracker[guess[index]] > 0
+        ) {
+          hints[index] = 'white'
+          colorTracker[guess[index]] -= 1
+          patternTracker[guess[index]] -= 1
+        }
       }
     }
   })
