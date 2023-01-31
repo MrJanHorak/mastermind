@@ -129,7 +129,7 @@ const removeDropZone = () => {
   }
 }
 
-const anitmateWinningGuess = () => {
+const animateWinningGuess = () => {
   currentRow = maxGuesses - guesses
   const winningGuess = document.querySelectorAll(`.gr${currentRow}`)
   winningGuess.forEach((peg) => {
@@ -170,7 +170,7 @@ const giveHint = () => {
     console.log('win condition')
     score += 100
     totalGuesses += guesses
-    anitmateWinningGuess()
+    animateWinningGuess()
     revealPattern()
     win = true
   }
@@ -199,7 +199,7 @@ const compGuessPat = (guess) => {
       if (patternTracker[guess[index]] < colorTracker[guess[index]]) {
         colorTracker[guess[index]] -= 1
       }
-
+    }
       if (pattern.includes(guess[index])) {
         if (
           guess[index] !== pattern[index] &&
@@ -210,7 +210,6 @@ const compGuessPat = (guess) => {
           patternTracker[guess[index]] -= 1
         }
       }
-    }
   })
   giveHint()
 }
