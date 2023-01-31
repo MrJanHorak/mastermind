@@ -11,16 +11,6 @@ let finished = false
 let dragged
 let colorPeg
 let win = false
-let colorTracker = {}
-let patternTracker = {
-  red: 0,
-  green: 0,
-  purple: 0,
-  white: 0,
-  black: 0,
-  orange: 0,
-  blue: 0
-}
 
 // create game field divs for DOM
 
@@ -52,16 +42,6 @@ const init = () => {
   currentRow = maxGuesses - guesses - 1
   finished = false
   win = false
-  colorTracker = {}
-  patternTracker = {
-    red: 0,
-    green: 0,
-    purple: 0,
-    white: 0,
-    black: 0,
-    orange: 0,
-    blue: 0
-  }
 
   for (let r = 0; r < maxGuesses; r++) {
     for (let h = 0; h < pattern.length; h++) {
@@ -138,6 +118,16 @@ const animateWinningGuess = () => {
   })
 }
 
+const animateLosing = () => {
+  for (let r = 0; r < maxGuesses; r++) {
+    for (let j = 0; j < pattern.length; j++) {
+      const guessPeg = document.getElementById(`gr${r}gc${j}`)
+      guessPeg.classList.add('animate__zoomOutDown')
+      guessPeg.style.setProperty('--animate-duration', '2s')
+    }
+  }
+}
+
 const revealPattern = () => {
   const toReveal = document.querySelectorAll('.toGuess')
   toReveal.forEach((ele, index) => {
@@ -161,9 +151,9 @@ const giveHint = () => {
   for (let h = 0; h < pattern.length; h++) {
     let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
     if (hints[h] !== '') {
-      currentHintPeg.style.backgroundColor = hints[h]
       currentHintPeg.style.setProperty('--animate-duration', '2s')
       currentHintPeg.classList.add('animate__zoomIn')
+      currentHintPeg.style.backgroundColor = hints[h]
     }
   }
   if (hints.filter((ele) => ele === 'red').length === 4) {
@@ -174,11 +164,27 @@ const giveHint = () => {
     revealPattern()
     win = true
   }
+  if (hints.filter((ele) => ele!=="red").length !==3 && guesses === 10){
+    console.log('loose condition')
+    animateLosing()
+    revealPattern()
+  }
   removeDropZone()
 }
 
 // function to compare guess with chosen pattern
 const compGuessPat = (guess) => {
+  let colorTracker = {}
+  let patternTracker = {
+    red: 0,
+    green: 0,
+    purple: 0,
+    white: 0,
+    black: 0,
+    orange: 0,
+    blue: 0
+  }
+
   guess.forEach((color) => {
     color in colorTracker
       ? (colorTracker[color] += 1)
@@ -196,20 +202,17 @@ const compGuessPat = (guess) => {
       hints[index] = 'red'
       colorTracker[guess[index]] -= 1
       patternTracker[guess[index]] -= 1
-      if (patternTracker[guess[index]] < colorTracker[guess[index]]) {
+    }
+  })
+
+  guess.forEach((color, index) => {
+    if (pattern.includes(guess[index])) {
+      if (guess[index] !== pattern[index] && patternTracker[guess[index]] > 0) {
+        hints[index] = 'white'
         colorTracker[guess[index]] -= 1
+        patternTracker[guess[index]] -= 1
       }
     }
-      if (pattern.includes(guess[index])) {
-        if (
-          guess[index] !== pattern[index] &&
-          patternTracker[guess[index]] > 0
-        ) {
-          hints[index] = 'white'
-          colorTracker[guess[index]] -= 1
-          patternTracker[guess[index]] -= 1
-        }
-      }
   })
   giveHint()
 }
@@ -238,7 +241,6 @@ const dragEnter = (e) => {
 
 const dragLeave = (e) => {
   e.stopPropagation()
-  // e.prevent.default()
   e.target.classList.remove('hover')
 }
 
@@ -352,6 +354,3 @@ const render = () => {
 // game play
 render()
 shuffle(colors)
-
-// to help me test without having to play entire game
-console.log('Pattern: ', pattern)
