@@ -157,6 +157,7 @@ const hidePattern = () => {
     ele.classList.remove('animate__heartBeat')
   })
 }
+
 // function to give hints based upon current guess
 const giveHint = () => {
   shuffle(hints)
@@ -165,7 +166,7 @@ const giveHint = () => {
     let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
     if (hints[h] !== '') {
       currentHintPeg.style.setProperty('--animate-duration', '2s')
-      currentHintPeg.classList.add('animate__fadeOutDown')
+      currentHintPeg.classList.add('animate__heartBeat')
       currentHintPeg.style.backgroundColor = hints[h]
     }
   }
@@ -261,6 +262,7 @@ const dragDrop = (e) => {
   const data = e.dataTransfer.getData('text')
   let dropIndex = e.target.id.split('')[5]
   e.target.style.backgroundColor = dragged
+  e.target.style.opacity = '1'
   guess[dropIndex] = dragged
   if (!guess.includes('')) {
     compGuessPat(guess)
