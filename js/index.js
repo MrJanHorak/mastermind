@@ -54,12 +54,13 @@ const init = () => {
     for (let j = 0; j < pattern.length; j++) {
       const guessPeg = document.getElementById(`gr${r}gc${j}`)
       guessPeg.style.backgroundColor = 'gray'
+      guessPeg.innerHTML = ``
+      guessPeg.style.opacity = '0.5'
     }
   }
   hidePattern()
   shuffle(colors)
   patternPicker(pattern)
-  console.log(pattern)
   removeDropZone()
 }
 
@@ -119,13 +120,25 @@ const animateWinningGuess = () => {
 }
 
 const animateLosing = () => {
-  for (let r = 0; r < maxGuesses; r++) {
-    for (let j = 0; j < pattern.length; j++) {
-      const guessPeg = document.getElementById(`gr${r}gc${j}`)
-      guessPeg.classList.add('animate__zoomOutDown')
-      guessPeg.style.setProperty('--animate-duration', '2s')
-    }
+  for (let i = 0; i < maxGuesses; i++) {
+    let guessPeg = document.querySelectorAll(`.gr${i}`)
+    guessPeg.forEach((peg) => {
+      peg.classList.add('animate__flash')
+      peg.style.setProperty('--animate-duration', '2s')
+      peg.style.opacity = '0.5'
+    })
   }
+  let messageRow = Math.floor(maxGuesses / 2)
+  console.log(messageRow)
+  let row = document.querySelectorAll(`.gr${messageRow}`)
+  let message = ['l', 'o', 's', 't']
+  row.forEach((ele, index) => {
+    console.log(index)
+    ele.innerHTML = `<b><h3>${message[index]}</h3></b>`
+    ele.style.color = 'yellow'
+    ele.style.opacity = '1'
+    ele.classList.add('animate__heartBeat')
+  })
 }
 
 const revealPattern = () => {
@@ -152,7 +165,7 @@ const giveHint = () => {
     let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
     if (hints[h] !== '') {
       currentHintPeg.style.setProperty('--animate-duration', '2s')
-      currentHintPeg.classList.add('animate__zoomIn')
+      currentHintPeg.classList.add('animate__fadeOutDown')
       currentHintPeg.style.backgroundColor = hints[h]
     }
   }
@@ -163,8 +176,7 @@ const giveHint = () => {
     animateWinningGuess()
     revealPattern()
     win = true
-  }
-  if (hints.filter((ele) => ele!=="red").length !==3 && guesses === 10){
+  } else if (guesses === maxGuesses) {
     console.log('loose condition')
     animateLosing()
     revealPattern()

@@ -25,7 +25,7 @@ rules.style.backgroundColor = 'white'
 p1.innerHTML =
   'In MindMaster the player must guess a code by placing pegs. The goal is to arrange different colored pegs in the correct order in a row. The resulting pattern must match the hidden code of the coder at the end.<br/><br/>'
 p2.innerHTML =
-  'The player has up to 10 turns to crack the code. It consists of 4 pins, which in turn can be selected from 6 colors. A color can be represented several times.<br/><br/>'
+  'The player has up to 10 turns to crack the code. It consists of 4 pins, which in turn can be selected from 7 colors. A color can be represented several times.<br/><br/>'
 p3.innerText =
   'Each round, the player first arranges their pins in the respective row. This is done by dragging and placing the desired color onto the code preparation area. After the selection is confirmed, the coder (in this case the game) checks if the pins are placed correctly and then gives between 0 and 4 hints. Depending on the result, either the next round begins or the game ends.'
 p4.innerHTML = '<h3>Clues</h3>'
