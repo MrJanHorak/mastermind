@@ -55,7 +55,7 @@ const init = () => {
       const guessPeg = document.getElementById(`gr${r}gc${j}`)
       guessPeg.style.backgroundColor = 'gray'
       guessPeg.innerHTML = ``
-      guessPeg.style.opacity = '0.5'
+      guessPeg.style.opacity = '1'
     }
   }
   hidePattern()
@@ -171,14 +171,12 @@ const giveHint = () => {
     }
   }
   if (hints.filter((ele) => ele === 'red').length === 4) {
-    console.log('win condition')
     score += 100
     totalGuesses += guesses
     animateWinningGuess()
     revealPattern()
     win = true
   } else if (guesses === maxGuesses) {
-    console.log('loose condition')
     animateLosing()
     revealPattern()
   }
