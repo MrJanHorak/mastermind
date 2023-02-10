@@ -2,10 +2,15 @@
 
 ## Background story:
 
+Ever since the first few weeks of actively learning JavaScript and creating a Battleship game I have wanted to return to vanilla Javascript to make another game. There is simply something satisfying in creating a game from scratch.
+
+After diving deeper into other frameworks and languages I was inspired by students in our cohorts to create a game in the same time frame we give them at the beginning of their journey.
+
+This Mastermind clone is the result of my attempt to create a JS game in just a few days.
 
 ## Some challenges I faced:
 
-Some of the most challenging parts of the code that were most challenging for me were for one the drag and drop capabilities. I was able to quickly enable drag capabilities, however it took me a while to be able to have the drop capability fire.
+Some of the most challenging parts of the code for me were achieving full functionality on the the drag and drop capabilities. I was able to quickly enable drag capabilities, however it took me a while to be able to have the drop capability fire.
 
 Adding `e.stopPropagation()` and `e.preventDefault()` on the drag, enter, leave events solved the problem. This stopped any event bubbling and enabled each event to fire and allowed my dropEvent to run smoothly.
 
@@ -39,7 +44,7 @@ const dragDrop = (e) => {
   }
 }
 ```
-Another part of this code that took me a while to work through was the method of giving the hints. I took multiple steps to compare the users guess with the randomly selected pattern.
+Another part of code that took me a while to work through was the method of giving the hints. I took multiple steps to compare the users guess with the randomly selected pattern. I created the compGuessPat (Compare Guess Pattern) function to essentially look at each elements of the users guess which is passed in as an array.
 
 ```JavaScript
 const compGuessPat = (guess) => {
@@ -54,7 +59,9 @@ const compGuessPat = (guess) => {
     blue: 0
   }
   ```
-  The compGeussPat (compare guess pattern) function takes in the users guess as a parameter and creates an object to keep track of each color and its frequency, in the guess and the selected pattern. Both patterns as iterated over and populate the objects in the following code block:
+  It instantiates an object to keep track of each color and its frequency, in the guess and the selected pattern respectively. The patternTracker must be reset each time the function is called, otherwise the comparison would fail, thus instantiating it in the scope of this function made the most sense. 
+  
+  Both the users guess array and the computers chosen pattern array are iterated over, in order to populate the corresponding objects:
 
   ```JavaScript
 
@@ -70,7 +77,7 @@ const compGuessPat = (guess) => {
       : (patternTracker[color] = 1)
   })
   ```
-Once these objects are created and populated they are run through a several comparisons. The first comparison checks each index of the guess array with the selected patten array. If the correct color is found in the correct index the a 'red' is added to the hint array and the objects tracking the colors are decremented by 1 in the corresponding color key:value pair. 
+Once these objects are created and populated they are run through a several comparisons. The first comparison checks each index of the users guess array with the selected patten array. If the correct color is found in the correct index the a 'red' is added to the hint array and the objects tracking the colors are decremented by 1 in the corresponding color key:value pair of both objects. 
 
 ```JavaScript
   guess.forEach((color, index) => {
@@ -82,7 +89,9 @@ Once these objects are created and populated they are run through a several comp
   })
   ```
 
-Then to ensure correct hints are given the guess array is iterated over again. This time the code checks to see if the the color at the index is included selected pattern that is to be guessed. The key here is that the current color iterated over must not be the same color at the selected index and the patternTracker must have a number larger than 0 located at the key:value pair at the color. THe order also matters, this check must occur after the first one that compares the direct indexes for equals, otherwise if a user guesses multiple of one color the hint array will add hints it should not.
+Then to ensure correct hints are given the guess array is iterated over again. This time the code checks to see if the the color at the index is included anywhere in the computers selected pattern. In order for this to properly function, two conditions must be fulfilled: 
+  - the pattern and the guess may not have the same color at the same index, that test has already completed.
+  - the patternTracker object must have 1 or more of that color still accounted for, otherwise the user will be given hints that are incorrect.
 
   ```JavaScript
 
