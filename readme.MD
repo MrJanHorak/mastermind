@@ -6,7 +6,7 @@ Ever since the first few weeks of actively learning JavaScript and creating a Ba
 
 After diving deeper into other frameworks and languages I was inspired by students in our cohorts to create a game in the same time frame we give them at the beginning of their journey.
 
-This Mastermind clone is the result of my attempt to create a JS game in just a few days.
+This Mastermind clone is the result of my attempt to create a JS game in just a few days. There is bare minimal actual HTML as everything you see on the screen is added using JavaScript DOM manipulation. Styling was added using CSS and some minimal CSS animation is added using [Anitmate.Css](https://animate.style/).
 
 ## Technologies:
 - javascript
@@ -121,3 +121,13 @@ Then to ensure correct hints are given the guess array is iterated over again. T
   giveHint()
 }
 ```
+## The Future of this project
+
+There are still a few ideas I have for this game. I hope to implement them one by one. As is the game is fully functional with a win and loose condition and challenging enough to keep coming back to solve the pattern.
+
+- enabling touch screen drag and drop
+- CSS scalability to render game on all screen sizes
+- use of local storage to store scores, streaks, etc
+- add user settings to choose how many max guesses or colors are used in the pattern
+- add a dark/light mode switch
+- render a score to the screen
