@@ -13,6 +13,9 @@ This Mastermind clone is the result of my attempt to create a JS game in just a 
 - css
 - html
 
+## Deployed Version:
+[Play it online here!](https://mindmaster.surge.sh/index.html)
+
 ## Screenshots:
 <img src=https://i.imgur.com/rDIDcDY.png width=200>
 <img src=https://i.imgur.com/XCBWI7K.png width=180 height=423>
