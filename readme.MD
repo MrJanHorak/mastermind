@@ -8,6 +8,17 @@ After diving deeper into other frameworks and languages I was inspired by studen
 
 This Mastermind clone is the result of my attempt to create a JS game in just a few days.
 
+## Technologies:
+- javascript
+- css
+- html
+
+## Screenshots:
+<img src=https://i.imgur.com/rDIDcDY.png width=200>
+<img src=https://i.imgur.com/XCBWI7K.png width=180 height=423>
+<img src=https://i.imgur.com/7AxvNI5.png width=190 height=423>
+<img src=https://i.imgur.com/uoteS2H.png width=180 height=423>
+
 ## Some challenges I faced:
 
 Some of the most challenging parts of the code for me were achieving full functionality on the the drag and drop capabilities. I was able to quickly enable drag capabilities, however it took me a while to be able to have the drop capability fire.
