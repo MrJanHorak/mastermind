@@ -14,25 +14,6 @@ let win = false
 
 // create game field divs for DOM
 
-// const instructions = document.querySelector('.instructions')
-const game = document.querySelector('.game')
-const gameContainerDiv = document.createElement('div')
-gameContainerDiv.className = 'mainContainer'
-const gameHeader = document.createElement('h1')
-const patternDiv = document.createElement('div')
-const gameBoardDiv = document.createElement('div')
-const guessDiv = document.createElement('div')
-const scoreDiv = document.createElement('div')
-const gamePieceDiv = document.createElement('div')
-gamePieceDiv.className = 'gamePieceDiv'
-const gamePieceCon = document.createElement('div')
-gamePieceCon.className = 'gamePieceCon'
-const buttonContainer = document.createElement('div')
-const replayButton = document.createElement('button')
-replayButton.className = 'replay'
-const rulesButton = document.createElement('button')
-rulesButton.className = 'replay'
-
 // function to reset game play on replay
 const init = () => {
   pattern = ['', '', '', '']
@@ -170,13 +151,22 @@ const giveHint = () => {
       currentHintPeg.style.backgroundColor = hints[h]
     }
   }
+
   if (hints.filter((ele) => ele === 'red').length === 4) {
-    score += 100
+    score += 100 * maxGuesses - 100 * guesses
     totalGuesses += guesses
+    console.log('SCORE: ', score)
+    console.log('TOTAL GUESSES: ', totalGuesses)
+    scoreContainer.innerHTML = `<b>Score: ${score}   Total guesses: ${totalGuesses}</b>`
     animateWinningGuess()
     revealPattern()
     win = true
   } else if (guesses === maxGuesses) {
+    score += 100 * maxGuesses - 100 * guesses
+    totalGuesses += guesses
+    console.log('SCORE: ', score)
+    console.log('TOTAL GUESSES: ', totalGuesses)
+    scoreContainer.innerHTML = `<b>Score: ${score}   Total guesses: ${totalGuesses}</b>`
     animateLosing()
     revealPattern()
   }
@@ -281,8 +271,12 @@ const render = () => {
   gamePieceDiv.className = 'gamePieceDiv'
   const gamePieceCon = document.createElement('div')
   gamePieceCon.className = 'gamePieceCon'
+  const buttonContainer = document.createElement('div')
   const replayButton = document.createElement('button')
   replayButton.className = 'replay'
+  const rulesButton = document.createElement('button')
+  rulesButton.className = 'replay'
+  const scoreContainer = document.createElement('div')
   // update variables needed for proper game play
   currentRow = maxGuesses - guesses - 1
 
@@ -351,6 +345,9 @@ const render = () => {
 
   createDropZone()
 
+  score += 100 * maxGuesses
+  scoreContainer.innerHTML = `<b>Score: ${score} Total guesses: ${totalGuesses}</b>`
+  gameContainerDiv.appendChild(scoreContainer)
   replayButton.innerHTML = '<b>replay</b>'
   replayButton.addEventListener('click', init)
   rulesButton.innerHTML = '<b>rules</b>'
