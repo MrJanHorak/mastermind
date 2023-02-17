@@ -13,6 +13,24 @@ let colorPeg
 let win = false
 
 // create game field divs for DOM
+const game = document.querySelector('.game')
+  const gameContainerDiv = document.createElement('div')
+  gameContainerDiv.className = 'mainContainer'
+  const gameHeader = document.createElement('h1')
+  const patternDiv = document.createElement('div')
+  const gameBoardDiv = document.createElement('div')
+  const guessDiv = document.createElement('div')
+  const scoreDiv = document.createElement('div')
+  const gamePieceDiv = document.createElement('div')
+  gamePieceDiv.className = 'gamePieceDiv'
+  const gamePieceCon = document.createElement('div')
+  gamePieceCon.className = 'gamePieceCon'
+  const buttonContainer = document.createElement('div')
+  const replayButton = document.createElement('button')
+  replayButton.className = 'replay'
+  const rulesButton = document.createElement('button')
+  rulesButton.className = 'replay'
+  const scoreContainer = document.createElement('div')
 
 // function to reset game play on replay
 const init = () => {
@@ -143,6 +161,7 @@ const hidePattern = () => {
 const giveHint = () => {
   shuffle(hints)
   currentRow = maxGuesses - guesses
+  let scoreBoard = document.querySelector('.scoreBoard')
   for (let h = 0; h < pattern.length; h++) {
     let currentHintPeg = document.querySelector(`#hr${currentRow}hi${h}`)
     if (hints[h] !== '') {
@@ -157,7 +176,7 @@ const giveHint = () => {
     totalGuesses += guesses
     console.log('SCORE: ', score)
     console.log('TOTAL GUESSES: ', totalGuesses)
-    scoreContainer.innerHTML = `<b>Score: ${score}   Total guesses: ${totalGuesses}</b>`
+    scoreBoard.innerHTML = `<b>Score: ${score}   Total guesses: ${totalGuesses}</b>`
     animateWinningGuess()
     revealPattern()
     win = true
@@ -166,7 +185,7 @@ const giveHint = () => {
     totalGuesses += guesses
     console.log('SCORE: ', score)
     console.log('TOTAL GUESSES: ', totalGuesses)
-    scoreContainer.innerHTML = `<b>Score: ${score}   Total guesses: ${totalGuesses}</b>`
+    scoreBoard.innerHTML = `<b>Score: ${score}   Total guesses: ${totalGuesses}</b>`
     animateLosing()
     revealPattern()
   }
@@ -259,24 +278,24 @@ const dragDrop = (e) => {
 
 // fill the DOM
 const render = () => {
-  const game = document.querySelector('.game')
-  const gameContainerDiv = document.createElement('div')
-  gameContainerDiv.className = 'mainContainer'
-  const gameHeader = document.createElement('h1')
-  const patternDiv = document.createElement('div')
-  const gameBoardDiv = document.createElement('div')
-  const guessDiv = document.createElement('div')
-  const scoreDiv = document.createElement('div')
-  const gamePieceDiv = document.createElement('div')
-  gamePieceDiv.className = 'gamePieceDiv'
-  const gamePieceCon = document.createElement('div')
-  gamePieceCon.className = 'gamePieceCon'
-  const buttonContainer = document.createElement('div')
-  const replayButton = document.createElement('button')
-  replayButton.className = 'replay'
-  const rulesButton = document.createElement('button')
-  rulesButton.className = 'replay'
-  const scoreContainer = document.createElement('div')
+  // const game = document.querySelector('.game')
+  // const gameContainerDiv = document.createElement('div')
+  // gameContainerDiv.className = 'mainContainer'
+  // const gameHeader = document.createElement('h1')
+  // const patternDiv = document.createElement('div')
+  // const gameBoardDiv = document.createElement('div')
+  // const guessDiv = document.createElement('div')
+  // const scoreDiv = document.createElement('div')
+  // const gamePieceDiv = document.createElement('div')
+  // gamePieceDiv.className = 'gamePieceDiv'
+  // const gamePieceCon = document.createElement('div')
+  // gamePieceCon.className = 'gamePieceCon'
+  // const buttonContainer = document.createElement('div')
+  // const replayButton = document.createElement('button')
+  // replayButton.className = 'replay'
+  // const rulesButton = document.createElement('button')
+  // rulesButton.className = 'replay'
+  // const scoreContainer = document.createElement('div')
   // update variables needed for proper game play
   currentRow = maxGuesses - guesses - 1
 
@@ -347,6 +366,7 @@ const render = () => {
 
   score += 100 * maxGuesses
   scoreContainer.innerHTML = `<b>Score: ${score} Total guesses: ${totalGuesses}</b>`
+  scoreContainer.className = 'scoreBoard'
   gameContainerDiv.appendChild(scoreContainer)
   replayButton.innerHTML = '<b>replay</b>'
   replayButton.addEventListener('click', init)
