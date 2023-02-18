@@ -367,7 +367,7 @@ const render = () => {
   scoreContainer.innerHTML = `<b>Score: ${score} Total guesses: ${totalGuesses}</b>`
   scoreContainer.className = 'scoreBoard'
   gameContainerDiv.appendChild(scoreContainer)
-  replayButton.innerHTML = '<b>replay</b>'
+  replayButton.innerHTML = '<b>again</b>'
   replayButton.addEventListener('click', init)
   rulesButton.innerHTML = '<b>rules</b>'
   rulesButton.addEventListener(
