@@ -364,7 +364,6 @@ const render = () => {
 
   createDropZone()
 
-  score += 100 * maxGuesses
   scoreContainer.innerHTML = `<b>Score: ${score} Total guesses: ${totalGuesses}</b>`
   scoreContainer.className = 'scoreBoard'
   gameContainerDiv.appendChild(scoreContainer)
