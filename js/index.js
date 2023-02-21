@@ -11,26 +11,27 @@ let finished = false
 let dragged
 let colorPeg
 let win = false
+let element, bbox, startX, startY;
 
 // create game field divs for DOM
 const game = document.querySelector('.game')
-  const gameContainerDiv = document.createElement('div')
-  gameContainerDiv.className = 'mainContainer'
-  const gameHeader = document.createElement('h1')
-  const patternDiv = document.createElement('div')
-  const gameBoardDiv = document.createElement('div')
-  const guessDiv = document.createElement('div')
-  const scoreDiv = document.createElement('div')
-  const gamePieceDiv = document.createElement('div')
-  gamePieceDiv.className = 'gamePieceDiv'
-  const gamePieceCon = document.createElement('div')
-  gamePieceCon.className = 'gamePieceCon'
-  const buttonContainer = document.createElement('div')
-  const replayButton = document.createElement('button')
-  replayButton.className = 'replay'
-  const rulesButton = document.createElement('button')
-  rulesButton.className = 'replay'
-  const scoreContainer = document.createElement('div')
+const gameContainerDiv = document.createElement('div')
+gameContainerDiv.className = 'mainContainer'
+const gameHeader = document.createElement('h1')
+const patternDiv = document.createElement('div')
+const gameBoardDiv = document.createElement('div')
+const guessDiv = document.createElement('div')
+const scoreDiv = document.createElement('div')
+const gamePieceDiv = document.createElement('div')
+gamePieceDiv.className = 'gamePieceDiv'
+const gamePieceCon = document.createElement('div')
+gamePieceCon.className = 'gamePieceCon'
+const buttonContainer = document.createElement('div')
+const replayButton = document.createElement('button')
+replayButton.className = 'replay'
+const rulesButton = document.createElement('button')
+rulesButton.className = 'replay'
+const scoreContainer = document.createElement('div')
 
 // function to reset game play on replay
 const init = () => {
@@ -238,13 +239,24 @@ const compGuessPat = (guess) => {
 }
 
 // set up drag event functions
+
 const dragStart = (e) => {
   e.target.classList.add('dragging')
   dragged = e.target.getAttribute('data-color')
+  let deltaX = e.clientX - startX;
+  let deltaY = e.clientY - startY;
+  element.style.left = bbox.left + deltaX + "px";
+  element.style.top = bbox.top + deltaY + "px";
 }
 
 const dragEnd = (e) => {
   e.target.classList.remove('dragging')
+}
+const dragReleased = (e) => {
+  e.target.classList.remove('dragging')
+  e.target.removeEventListener('pointermove', dragStart)
+  e.target.removeEventListener('pointerup', dragEnd)
+  e.target.removeEventListener('pointercancel', dragReleased)
 }
 
 const dragOver = (e) => {
@@ -274,6 +286,14 @@ const dragDrop = (e) => {
   if (!guess.includes('')) {
     compGuessPat(guess)
   }
+}
+
+const pointerDown = (e) => {
+  e.target.classList.add('dragging')
+  e.target.addEventListener('pointermove', dragStart, { passive: true })
+  e.target.addEventListener('pointerup', dragEnd, { passive: true })
+  e.target.addEventListener('pointercancel', dragReleased, { passive: true })
+  dragged = e.target.getAttribute('data-color')
 }
 
 // fill the DOM
@@ -355,8 +375,10 @@ const render = () => {
     colorPeg.style.backgroundColor = color
     colorPeg.id = index
     colorPeg.draggable = true
-    colorPeg.addEventListener('dragstart', dragStart)
-    colorPeg.addEventListener('dragend', dragEnd)
+    colorPeg.addEventListener('pointerdown', pointerDown)
+    // colorPeg.addEventListener('pointermove', dragStart)
+    // colorPeg.addEventListener('pointerup', dragEnd)
+    // colorPeg.addEventListener('pointercancel', dragReleased)
     gamePieceDiv.appendChild(colorPeg)
     gamePieceCon.appendChild(gamePieceDiv)
     gameContainerDiv.appendChild(gamePieceCon)
