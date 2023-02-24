@@ -245,8 +245,8 @@ const dragStart = (e) => {
   dragged = e.target.getAttribute('data-color')
   let deltaX = e.clientX - startX;
   let deltaY = e.clientY - startY;
-  element.style.left = bbox.left + deltaX + "px";
-  element.style.top = bbox.top + deltaY + "px";
+  e.style.left = bbox.left + deltaX + "px";
+  e.style.top = bbox.top + deltaY + "px";
 }
 
 const dragEnd = (e) => {
