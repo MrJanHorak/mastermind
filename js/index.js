@@ -298,24 +298,7 @@ const pointerDown = (e) => {
 
 // fill the DOM
 const render = () => {
-  // const game = document.querySelector('.game')
-  // const gameContainerDiv = document.createElement('div')
-  // gameContainerDiv.className = 'mainContainer'
-  // const gameHeader = document.createElement('h1')
-  // const patternDiv = document.createElement('div')
-  // const gameBoardDiv = document.createElement('div')
-  // const guessDiv = document.createElement('div')
-  // const scoreDiv = document.createElement('div')
-  // const gamePieceDiv = document.createElement('div')
-  // gamePieceDiv.className = 'gamePieceDiv'
-  // const gamePieceCon = document.createElement('div')
-  // gamePieceCon.className = 'gamePieceCon'
-  // const buttonContainer = document.createElement('div')
-  // const replayButton = document.createElement('button')
-  // replayButton.className = 'replay'
-  // const rulesButton = document.createElement('button')
-  // rulesButton.className = 'replay'
-  // const scoreContainer = document.createElement('div')
+
   // update variables needed for proper game play
   currentRow = maxGuesses - guesses - 1
 
@@ -376,9 +359,6 @@ const render = () => {
     colorPeg.id = index
     colorPeg.draggable = true
     colorPeg.addEventListener('pointerdown', pointerDown)
-    // colorPeg.addEventListener('pointermove', dragStart)
-    // colorPeg.addEventListener('pointerup', dragEnd)
-    // colorPeg.addEventListener('pointercancel', dragReleased)
     gamePieceDiv.appendChild(colorPeg)
     gamePieceCon.appendChild(gamePieceDiv)
     gameContainerDiv.appendChild(gamePieceCon)
